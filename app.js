@@ -1,17 +1,18 @@
 require("dotenv").config();
-let app;
+require("./serverDB");
 
-// Npm modules
 const express = require("express");
+const app = express();
+const { errorHandler, urlHandler } = require("./middlewares/error-handler");
+
 const parser = require("body-parser");
-
-// Load modules
-// const routes = require("./routes");
-
-// create app instance
-app = express();
-
-// json parsing
 app.use(parser.json());
+
+const userRoute = require("./routes/user-route");
+
+app.use("/user", userRoute);
+
+app.use(errorHandler);
+app.use("*", urlHandler);
 
 module.exports = { app };
